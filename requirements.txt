@@ -1,3 +1,4 @@
+openai==0.28
 streamlit
 transformers
 mediapipe
@@ -6,3 +7,5 @@ opencv-python-headless
 Pillow
 matplotlib
 pandas
+jsonpickle
+torch
