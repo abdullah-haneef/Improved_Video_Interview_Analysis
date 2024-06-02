@@ -143,6 +143,19 @@ def generate_summary(emotion_results, posture_results):
 
     return response['choices'][0]['message']['content']
 
+# Function to save analysis to CSV
+def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_results.csv'):
+    data = {
+        'Video Title': [video_title],
+        'Analysis': [analysis_output]
+    }
+
+    df = pd.DataFrame(data)
+    
+    if not os.path.isfile(output_file):
+        df.to_csv(output_file, index=False)
+    else:
+        df.to_csv(output_file, mode='a', header=False, index=False)
 
 # Streamlit app
 st.set_page_config(page_title='Interview Analysis', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
@@ -179,8 +192,8 @@ st.sidebar.header('Contact')
 st.sidebar.write(
     """
     - **Email:** abdullahhaneef08@gmail.com
-    - **GitHub:** [your_github_profile](https://github.com/abdullah-haneef)
-    - **LinkedIn:** [your_linkedin_profile](https://www.linkedin.com/in/abdullah-haneef/)
+    - **GitHub:** https://github.com/abdullah-haneef
+    - **LinkedIn:** https://www.linkedin.com/in/abdullah-haneef/
     """
 )
 
@@ -208,3 +221,10 @@ if video_file is not None:
     analysis_output = generate_summary(emotion_results, posture_results)
 
     st.write(analysis_output)
+
+    # Get video title from user
+    video_title = st.text_input('Enter the video title', '')
+
+    if st.button('Save Analysis'):
+        save_analysis_to_csv(video_title, analysis_output)
+        st.success('Analysis saved to CSV file.')
