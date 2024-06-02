@@ -1,0 +1,8 @@
+streamlit
+transformers
+mediapipe
+yt-dlp
+opencv-python-headless
+Pillow
+matplotlib
+pandas
