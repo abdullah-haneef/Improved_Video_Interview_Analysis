@@ -1,5 +1,4 @@
-/* styles.css */
-
+/* Main content background and text color */
 body {
     background-color: #121212;
     color: white;
@@ -10,42 +9,26 @@ body {
     color: white;
 }
 
+/* Sidebar background and text color */
+.css-1aumxhk {
+    background-color: white !important;
+    color: black !important;
+}
+
+.sidebar .sidebar-content {
+    background-color: white;
+    color: black;
+}
+
+.sidebar .sidebar-content .block-container {
+    color: black;
+}
+
+/* Header and other text colors */
 h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
 p {
     color: white;
-}
-
-.sidebar .sidebar-content {
-    background-color: #333333;
-    color: white;
-}
-
-.sidebar .sidebar-content .block-container {
-    background-color: #333333;
-    color: white;
-}
-
-.sidebar .sidebar-content h1, 
-.sidebar .sidebar-content h2, 
-.sidebar .sidebar-content h3, 
-.sidebar .sidebar-content h4, 
-.sidebar .sidebar-content h5, 
-.sidebar .sidebar-content h6 {
-    color: white;
-}
-
-.sidebar .sidebar-content p {
-    color: white;
-}
-
-.sidebar .sidebar-content label {
-    color: white;
-}
-
-.sidebar .sidebar-content .css-1aumxhk, .sidebar .sidebar-content .css-1yy6isu {
-    color: white;
-    background-color: #121212;
 }
