@@ -65,10 +65,39 @@ def detect_postures(frame_folder='frames'):
     return posture_results
 
 
-# Function to create emotion chart
-def create_emotion_chart(emotion_results):
+# # Function to create emotion chart
+# def create_emotion_chart(emotion_results):
+#     data = []
+#     important_emotions = ['happy', 'neutral', 'sad']
+
+#     for frame, emotions in emotion_results.items():
+#         for emotion in emotions:
+#             if emotion['label'].lower() in important_emotions:
+#                 data.append({
+#                     'Frame': frame,
+#                     'Label': emotion['label'],
+#                     'Score': emotion['score']
+#                 })
+
+#     df = pd.DataFrame(data)
+#     df_pivot = df.pivot(index='Frame', columns='Label', values='Score').fillna(0)
+
+#     plt.figure(figsize=(14, 8))
+#     for label in df_pivot.columns:
+#         plt.plot(df_pivot.index, df_pivot[label], label=label)
+
+#     plt.xlabel('Frame')
+#     plt.ylabel('Score')
+#     plt.title('Detected Human Emotions Over Frames')
+#     plt.legend(loc='upper right')
+#     plt.xticks([])
+#     plt.grid(True)
+#     plt.tight_layout()
+#     st.pyplot(plt)
+
+def create_emotion_distribution_chart(emotion_results):
     data = []
-    important_emotions = ['happy', 'neutral', 'sad']
+    important_emotions = ['happy', 'fear', 'surprise']
 
     for frame, emotions in emotion_results.items():
         for emotion in emotions:
@@ -80,17 +109,18 @@ def create_emotion_chart(emotion_results):
                 })
 
     df = pd.DataFrame(data)
-    df_pivot = df.pivot(index='Frame', columns='Label', values='Score').fillna(0)
+    df['Frame'] = pd.to_numeric(df['Frame'].str.replace('frame_', '').str.replace('.jpg', ''))
+    df = df.sort_values(by='Frame')
 
     plt.figure(figsize=(14, 8))
-    for label in df_pivot.columns:
-        plt.plot(df_pivot.index, df_pivot[label], label=label)
+    for label in df['Label'].unique():
+        subset = df[df['Label'] == label]
+        plt.plot(subset['Frame'], subset['Score'], label=label)
 
-    plt.xlabel('Frame')
-    plt.ylabel('Score')
-    plt.title('Detected Human Emotions Over Frames')
+    plt.xlabel('Frames')
+    plt.ylabel('Emotion Score')
+    plt.title('Emotion Scores Over Frames')
     plt.legend(loc='upper right')
-    plt.xticks([])
     plt.grid(True)
     plt.tight_layout()
     st.pyplot(plt)
@@ -106,10 +136,10 @@ def generate_summary(emotion_results, posture_results):
     Consider emotions and postures detected.
 
     Overall Result: Suitable / Not suitable
-    Overall Suitability Score: Calculated Score out of 10 by assigning scores to emotions (happy:2, neutral:0, sad:-2)
+    Overall Suitability Score: Calculated Score out of 10 by assigning scores to emotions (happy:2, surprise:0, fear:-2)
     Reasoning: Explain how specific emotions and postures influenced the candidate's performance. Discuss strengths and areas for improvement.
 
-    Generate output in the following format:
+    Generate output in the following format and do not use frame numbers in the analysis at all:
 
     Based on the observations from the interview, here is the assessment of the candidate's suitability:
 
