@@ -160,12 +160,18 @@ def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_res
 # Streamlit app
 st.set_page_config(page_title='Interview Analysis', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
 
-# Load the CSS file
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("styles.css")
+# Apply custom CSS for black background and white text
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: black;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 st.title('🎥 Interview Analysis')
 
