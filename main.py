@@ -187,6 +187,9 @@ def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_res
     else:
         df.to_csv(output_file, mode='a', header=False, index=False)
 
+    return df
+
+
 # Streamlit app
 st.set_page_config(page_title='Interview Analysis', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
 
@@ -254,21 +257,21 @@ video_file = st.sidebar.file_uploader('Choose a video file', type=['mp4', 'avi',
 time_interval = st.sidebar.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
 
 if video_file is not None:
-    st.sidebar.write('Extracting frames...')
+    st.spinner('Extracting frames...')
     with open('temp_video.mp4', 'wb') as f:
         f.write(video_file.read())
     extract_frames('temp_video.mp4', time_interval=time_interval)
 
-    st.sidebar.write('Detecting emotions...')
+    st.spinner('Detecting emotions...')
     emotion_results = detect_emotions()
 
-    st.sidebar.write('Detecting postures...')
+    st.spinner('Detecting postures...')
     posture_results = detect_postures()
 
-    st.sidebar.write('Creating emotion chart...')
+    st.spinner('Creating emotion chart...')
     create_emotion_chart(emotion_results)
 
-    st.sidebar.write('Generating summary...')
+    st.spinner('Generating summary...')
     analysis_output = generate_summary(emotion_results, posture_results)
 
     st.write(analysis_output)
@@ -277,5 +280,15 @@ if video_file is not None:
     video_title = st.text_input('Enter the video title', '')
 
     if st.button('Save Analysis'):
-        save_analysis_to_csv(video_title, analysis_output)
+        video_title = "Your Video Title"  # Replace with the actual video title
+        df = save_analysis_to_csv(video_title, analysis_output)
         st.success('Analysis saved to CSV file.')
+
+        # Provide download link for the CSV
+        csv = df.to_csv(index=False)
+        st.download_button(
+            label="Download CSV",
+            data=csv,
+            file_name='analysis_results.csv',
+            mime='text/csv',
+        )
