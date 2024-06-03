@@ -95,7 +95,7 @@ def detect_postures(frame_folder='frames'):
 #     plt.tight_layout()
 #     st.pyplot(plt)
 
-def create_emotion_distribution_chart(emotion_results):
+def create_emotion_chart(emotion_results):
     data = []
     important_emotions = ['happy', 'fear', 'surprise']
 
