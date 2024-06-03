@@ -160,47 +160,58 @@ def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_res
 # Streamlit app
 st.set_page_config(page_title='Interview Analysis', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
 
+# Set dark theme
 st.markdown(
     """
     <style>
-    .reportview-container {
-        background: #000;
-        color: white;
-    }
-    .sidebar .sidebar-content {
-        background: #000;
-        color: white;
+    body {
+        color: #FFFFFF;
+        background-color: #000000;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-st.title('Interview Analysis')
+st.title('🎥 Interview Analysis')
 
 # Sidebar
-st.sidebar.header('Project Description')
+st.sidebar.header('📋 Project Description')
 st.sidebar.write(
     """
-    This app analyzes interview videos to assess the suitability of candidates. 
-    It extracts frames from the video, detects emotions and postures, and generates 
-    a comprehensive summary using OpenAI's GPT-3.5-turbo.
+    🎥 Interview Analysis App 🤖
+
+    🔍 Analyze Interview Videos to Assess Candidate Suitability! 🧑‍💼👩‍💼
+
+    ✨ Features:
+
+    🎞️ Extract Frames from the Video
+    😃 Detect Emotions (Happy, Fear, Surprise) in Each Frame
+    🕺 Analyze Postures with Advanced Pose Detection
+    📝 Generate Comprehensive Summaries Using OpenAI's GPT-3.5-turbo
+    🚀 Transform Your Interview Process with Cutting-Edge AI Technology!
+
+
     """
 )
 
 st.sidebar.header('Contact')
 st.sidebar.write(
     """
-    - **Email:** abdullahhaneef08@gmail.com
-    - **GitHub:** https://github.com/abdullah-haneef
-    - **LinkedIn:** https://www.linkedin.com/in/abdullah-haneef/
+    
+    📬 Contact Information 🌐
+
+    📧 Email: [abdullahhaneef08@gmail.com](mailto:abdullahhaneef08@gmail.com)
+    🐱‍💻 GitHub: [https://github.com/abdullah-haneef]
+    💼 LinkedIn: [https://www.linkedin.com/in/abdullah-haneef/]
+    
     """
 )
 
 st.sidebar.header('Upload Video')
 video_file = st.sidebar.file_uploader('Choose a video file', type=['mp4', 'avi', 'mov', 'mkv'])
 
-time_interval = st.sidebar.slider('Frame Extraction Interval (minutes)', 1, 10, 1)
+time_interval = st.sidebar.slider('Frame Extraction Interval (minutes)', 0.5, 3, 0.5)
 
 if video_file is not None:
     st.sidebar.write('Extracting frames...')
