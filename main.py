@@ -65,36 +65,6 @@ def detect_postures(frame_folder='frames'):
     return posture_results
 
 
-# # Function to create emotion chart
-# def create_emotion_chart(emotion_results):
-#     data = []
-#     important_emotions = ['happy', 'neutral', 'sad']
-
-#     for frame, emotions in emotion_results.items():
-#         for emotion in emotions:
-#             if emotion['label'].lower() in important_emotions:
-#                 data.append({
-#                     'Frame': frame,
-#                     'Label': emotion['label'],
-#                     'Score': emotion['score']
-#                 })
-
-#     df = pd.DataFrame(data)
-#     df_pivot = df.pivot(index='Frame', columns='Label', values='Score').fillna(0)
-
-#     plt.figure(figsize=(14, 8))
-#     for label in df_pivot.columns:
-#         plt.plot(df_pivot.index, df_pivot[label], label=label)
-
-#     plt.xlabel('Frame')
-#     plt.ylabel('Score')
-#     plt.title('Detected Human Emotions Over Frames')
-#     plt.legend(loc='upper right')
-#     plt.xticks([])
-#     plt.grid(True)
-#     plt.tight_layout()
-#     st.pyplot(plt)
-
 def create_emotion_chart(emotion_results):
     data = []
     important_emotions = ['happy', 'fear', 'surprise']
@@ -171,8 +141,10 @@ def generate_summary(emotion_results, posture_results):
     Based on the observations from the interview, here is the assessment of the candidate's suitability:
 
     Candidate Assessment:
-    Overall Result:
+    
     Overall Suitability Score: X/10
+
+    Overall Result:
 
     Reasoning:
 
