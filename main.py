@@ -125,6 +125,33 @@ def create_emotion_chart(emotion_results):
     plt.tight_layout()
     st.pyplot(plt)
 
+def create_average_emotion_chart(emotion_results):
+    data = []
+    important_emotions = ['happy', 'fear', 'surprise']
+
+    for frame, emotions in emotion_results.items():
+        for emotion in emotions:
+            if emotion['label'].lower() in important_emotions:
+                data.append({
+                    'Label': emotion['label'].lower(),
+                    'Score': emotion['score']
+                })
+
+    df = pd.DataFrame(data)
+
+    # Group by 'Label' and calculate the mean score for each emotion
+    df_mean = df.groupby('Label').mean().reset_index()
+
+    # Plotting the average scores
+    plt.figure(figsize=(10, 6))
+    plt.bar(df_mean['Label'], df_mean['Score'], color=['red', 'green', 'orange'])
+    plt.xlabel('Emotion')
+    plt.ylabel('Average Score')
+    plt.title('Average Scores of Emotions')
+    plt.grid(True)
+    plt.tight_layout()
+    st.pyplot(plt)
+
 
 # OpenAI API Key
 openai.api_key = 'sk-proj-dOHrboyQvaNpRvnvAfo5T3BlbkFJ3C4VmjNGKnKiUO8AOwbi'
@@ -268,13 +295,14 @@ if video_file is not None:
     st.spinner('Detecting postures...')
     posture_results = detect_postures()
 
-    st.spinner('Creating emotion chart...')
-    create_emotion_chart(emotion_results)
-
     st.spinner('Generating summary...')
     analysis_output = generate_summary(emotion_results, posture_results)
 
     st.write(analysis_output)
+
+    st.spinner('Creating emotion chart...')
+    create_emotion_chart(emotion_results)
+    create_average_emotion_chart(emotion_results)
 
     # Get video title from user
     video_title = st.text_input('Enter the video title', '')
