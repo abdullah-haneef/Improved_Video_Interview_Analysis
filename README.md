@@ -4,9 +4,9 @@ Analyze interview videos to assess candidate suitability using cutting-edge AI t
 
 ![Interview Analyzer Screenshot](./screenshot.png)
 
-![Emotions Over Time](./emotions over time.png)
+![Emotions Over Time](./emotions_over_time.png)
 
-![Average Emotion Scores](./average emotion scores.png)
+![Average Emotion Scores](./average_emotion_scores.png)
 
 ## Features
 
