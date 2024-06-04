@@ -280,7 +280,6 @@ if video_file is not None:
     video_title = st.text_input('Enter the video title', '')
 
     if st.button('Save Analysis'):
-        video_title = "Your Video Title"  # Replace with the actual video title
         df = save_analysis_to_csv(video_title, analysis_output)
         st.success('Analysis saved to CSV file.')
 
