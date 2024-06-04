@@ -154,7 +154,7 @@ def create_average_emotion_chart(emotion_results):
 
 
 # OpenAI API Key
-openai.api_key = 'sk-proj-dOHrboyQvaNpRvnvAfo5T3BlbkFJ3C4VmjNGKnKiUO8AOwbi'
+openai.api_key = 'sk-proj-zYWjQyWEDOoFfDVNf3szT3BlbkFJIEV7tw7CcoxSq35cOtr4'
 
 # Function to generate a comprehensive summary
 def generate_summary(emotion_results, posture_results):
@@ -284,23 +284,23 @@ video_file = st.sidebar.file_uploader('Choose a video file', type=['mp4', 'avi',
 time_interval = st.sidebar.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
 
 if video_file is not None:
-    st.spinner('Extracting frames...')
+    with st.spinner('Extracting frames...')
     with open('temp_video.mp4', 'wb') as f:
         f.write(video_file.read())
     extract_frames('temp_video.mp4', time_interval=time_interval)
 
-    st.spinner('Detecting emotions...')
+    with st.spinner('Detecting emotions...')
     emotion_results = detect_emotions()
 
-    st.spinner('Detecting postures...')
+    with st.spinner('Detecting postures...')
     posture_results = detect_postures()
 
-    st.spinner('Generating summary...')
+    with st.spinner('Generating summary...')
     analysis_output = generate_summary(emotion_results, posture_results)
 
     st.write(analysis_output)
 
-    st.spinner('Creating emotion chart...')
+    with st.spinner('Creating emotion charts...')
     create_emotion_chart(emotion_results)
     create_average_emotion_chart(emotion_results)
 
