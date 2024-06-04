@@ -2,6 +2,10 @@
 
 Analyze interview videos to assess candidate suitability using cutting-edge AI technology! This app extracts frames from videos, detects emotions and postures, generates comprehensive summaries, and visualizes results.
 
+![Interview Analyzer Screenshot](./screenshot.png)
+![Emotions Over Time](./emotions over time.png)
+![Average Emotion Scores](./average emotion scores.png)
+
 ## Features
 
 - 🎞️ **Extract Frames**: Extract frames from the video at specified intervals.
