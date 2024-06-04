@@ -256,25 +256,25 @@ video_file = st.sidebar.file_uploader('Choose a video file', type=['mp4', 'avi',
 time_interval = st.sidebar.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
 
 if video_file is not None:
-    with st.spinner('Extracting frames...')
-    with open('temp_video.mp4', 'wb') as f:
-        f.write(video_file.read())
-    extract_frames('temp_video.mp4', time_interval=time_interval)
+    with st.spinner('Extracting frames...'):
+        with open('temp_video.mp4', 'wb') as f:
+            f.write(video_file.read())
+        extract_frames('temp_video.mp4', time_interval=time_interval)
 
-    with st.spinner('Detecting emotions...')
-    emotion_results = detect_emotions()
+    with st.spinner('Detecting emotions...'):
+        emotion_results = detect_emotions()
 
-    with st.spinner('Detecting postures...')
-    posture_results = detect_postures()
+    with st.spinner('Detecting postures...'):
+        posture_results = detect_postures()
 
-    with st.spinner('Generating summary...')
-    analysis_output = generate_summary(emotion_results, posture_results)
+    with st.spinner('Generating summary...'):
+        analysis_output = generate_summary(emotion_results, posture_results)
 
     st.write(analysis_output)
 
-    with st.spinner('Creating emotion charts...')
-    create_emotion_chart(emotion_results)
-    create_average_emotion_chart(emotion_results)
+    with st.spinner('Creating emotion charts...'):
+        create_emotion_chart(emotion_results)
+        create_average_emotion_chart(emotion_results)
 
     # Get video title from user
     video_title = st.text_input('Enter the video title', '')
