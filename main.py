@@ -255,9 +255,9 @@ st.sidebar.write(
 )
 
 # Button to navigate to "Behind the Scenes" page
-    if st.sidebar.button('Behind the Scenes'):
-        st.experimental_set_page_config(page_title='Behind the Scenes')
-        st.experimental_rerun()
+if st.sidebar.button('Behind the Scenes'):
+    st.experimental_set_page_config(page_title='Behind the Scenes')
+    st.experimental_rerun()
 
 time_interval = st.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
 
