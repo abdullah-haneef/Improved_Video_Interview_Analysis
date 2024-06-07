@@ -254,39 +254,15 @@ st.sidebar.write(
     """
 )
 
+# Button to navigate to "Behind the Scenes" page
+    if st.sidebar.button('Behind the Scenes'):
+        st.experimental_set_page_config(page_title='Behind the Scenes')
+        st.experimental_rerun()
+
 time_interval = st.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
 
 st.header('Upload Video')
 video_file = st.file_uploader('Choose a video file', type=['mp4', 'avi', 'mov', 'mkv'])
-
-# Handle button click for "Behind the Scenes" page
-if st.button('Behind the Scenes'):
-    st.markdown(
-        """
-        ### Behind the Scenes
-        Running the App:
-        
-        1. Start the Streamlit App:
-        - streamlit run app.py
-        
-        2. Upload a Video:
-        - Set the frame extraction interval (in minutes).
-        - Upload a video interview file from your device.
-
-        3. Analyze the Video:
-        - The app will extract frames, detect emotions and postures, and generate a summary.
-        - View emotion charts and save the analysis to a CSV file.
-        
-        Usage:
-        
-        1. Extract Frames Frames are extracted from the video at specified intervals and saved as images.
-        2. Detect Emotions Emotions (Happy, Fear, Surprise) are detected in each frame using a pre-trained model.
-        3. Detect Postures Postures are analyzed using MediaPipe's pose detection.
-        4. Generate Summary A comprehensive summary of the candidate's performance is generated using OpenAI's GPT-3.5-turbo.
-        5. Visualize Results Emotion scores over frames and average scores are displayed in line and bar charts.
-        """
-    )
-    st.stop()
 
 if video_file is not None:
     with st.spinner('Extracting frames...'):
@@ -327,3 +303,41 @@ if video_file is not None:
             file_name='analysis_results.csv',
             mime='text/csv',
         )
+
+
+# "Behind the Scenes" page
+def behind_the_scenes_page():
+    st.title('Behind the Scenes')
+    st.write(
+        """
+        
+        ### Behind the Scenes
+        Running the App:
+        
+        1. Start the Streamlit App:
+        - streamlit run app.py
+        
+        2. Upload a Video:
+        - Set the frame extraction interval (in minutes).
+        - Upload a video interview file from your device.
+
+        3. Analyze the Video:
+        - The app will extract frames, detect emotions and postures, and generate a summary.
+        - View emotion charts and save the analysis to a CSV file.
+        
+        Usage:
+        
+        1. Extract Frames Frames are extracted from the video at specified intervals and saved as images.
+        2. Detect Emotions Emotions (Happy, Fear, Surprise) are detected in each frame using a pre-trained model.
+        3. Detect Postures Postures are analyzed using MediaPipe's pose detection.
+        4. Generate Summary A comprehensive summary of the candidate's performance is generated using OpenAI's GPT-3.5-turbo.
+        5. Visualize Results Emotion scores over frames and average scores are displayed in line and bar charts.
+        
+        """
+    )
+
+# Page navigation
+if st.experimental_get_page_config()['page_title'] == 'Behind the Scenes':
+    behind_the_scenes_page()
+else:
+    main_page()
