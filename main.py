@@ -27,6 +27,7 @@ def extract_frames(video_path, output_folder='frames', time_interval=1):
     frame_interval = int(fps * 60 * time_interval)  # Convert minutes to frames
 
     count = 0
+    first_frame_path = None
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -34,9 +35,12 @@ def extract_frames(video_path, output_folder='frames', time_interval=1):
         if count % frame_interval == 0:
             frame_filename = os.path.join(output_folder, f"frame_{count}.jpg")
             cv2.imwrite(frame_filename, frame)
+            if first_frame_path is None:
+                first_frame_path = frame_filename
         count += 1
 
     cap.release()
+    return first_frame_path
 
 
 # Function to detect emotions in frames
@@ -250,16 +254,48 @@ st.sidebar.write(
     """
 )
 
-st.sidebar.header('Upload Video')
-video_file = st.sidebar.file_uploader('Choose a video file', type=['mp4', 'avi', 'mov', 'mkv'])
+time_interval = st.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
 
-time_interval = st.sidebar.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
+st.header('Upload Video')
+video_file = st.file_uploader('Choose a video file', type=['mp4', 'avi', 'mov', 'mkv'])
+
+# Handle button click for "Behind the Scenes" page
+if st.button('Behind the Scenes'):
+    st.markdown(
+        """
+        ### Behind the Scenes
+        Running the App:
+        
+        1. Start the Streamlit App:
+        - streamlit run app.py
+        
+        2. Upload a Video:
+        - Set the frame extraction interval (in minutes).
+        - Upload a video interview file from your device.
+
+        3. Analyze the Video:
+        - The app will extract frames, detect emotions and postures, and generate a summary.
+        - View emotion charts and save the analysis to a CSV file.
+        
+        Usage:
+        
+        1. Extract Frames Frames are extracted from the video at specified intervals and saved as images.
+        2. Detect Emotions Emotions (Happy, Fear, Surprise) are detected in each frame using a pre-trained model.
+        3. Detect Postures Postures are analyzed using MediaPipe's pose detection.
+        4. Generate Summary A comprehensive summary of the candidate's performance is generated using OpenAI's GPT-3.5-turbo.
+        5. Visualize Results Emotion scores over frames and average scores are displayed in line and bar charts.
+        """
+    )
+    st.stop()
 
 if video_file is not None:
     with st.spinner('Extracting frames...'):
         with open('temp_video.mp4', 'wb') as f:
             f.write(video_file.read())
-        extract_frames('temp_video.mp4', time_interval=time_interval)
+        first_frame_path = extract_frames('temp_video.mp4', time_interval=time_interval)
+
+    if first_frame_path:
+        st.image(first_frame_path, caption='First extracted frame from the video', use_column_width=True)
 
     with st.spinner('Detecting emotions...'):
         emotion_results = detect_emotions()
