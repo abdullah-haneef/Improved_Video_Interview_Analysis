@@ -269,26 +269,53 @@ def behind_the_scenes_page():
         """
         
         ### Behind the Scenes
-        Running the App:
+        Here's how the code is composed of different functions and their description:
         
-        1. Start the Streamlit App:
-        - streamlit run app.py
+        1. extract_frames:
+        - Extracts frames from a video file at specified time intervals.
+        - Inputs:
+            - video_path: Path to the video file.
+            - output_folder: Folder to save the extracted frames (default is 'frames').
+            - time_interval: Interval in minutes between frame extractions (default is 1).
+        - Returns the path of the first extracted frame.
         
-        2. Upload a Video:
-        - Set the frame extraction interval (in minutes).
-        - Upload a video interview file from your device.
+        2. detect_emotions:
+        - Detects emotions in images stored in a specified folder.
+        - Inputs:
+            - frame_folder: Path to the folder containing frames (default is 'frames').
+        - Returns a dictionary of emotion analysis results.
 
-        3. Analyze the Video:
-        - The app will extract frames, detect emotions and postures, and generate a summary.
-        - View emotion charts and save the analysis to a CSV file.
-        
-        Usage:
-        
-        1. Extract Frames Frames are extracted from the video at specified intervals and saved as images.
-        2. Detect Emotions Emotions (Happy, Fear, Surprise) are detected in each frame using a pre-trained model.
-        3. Detect Postures Postures are analyzed using MediaPipe's pose detection.
-        4. Generate Summary A comprehensive summary of the candidate's performance is generated using OpenAI's GPT-3.5-turbo.
-        5. Visualize Results Emotion scores over frames and average scores are displayed in line and bar charts.
+        3. detect_postures:
+        - Analyzes postures in images stored in a specified folder.
+        - Inputs:
+            - frame_folder: Path to the folder containing frames (default is 'frames').
+        - Returns a dictionary of posture analysis results.
+
+        4. create_emotion_chart:
+        - Generates a line chart of emotion scores over video frames.
+        - Inputs:
+            - emotion_results: Dictionary of emotion analysis results.
+
+        5. create_average_emotion_chart:
+        - Generates a bar chart showing the average scores of specific emotions across all frames.
+        - Inputs:
+            - emotion_results: Dictionary of emotion analysis results.
+
+        6. generate_summary:
+        - Generates a comprehensive summary of the candidate's performance based on detected emotions and postures.
+        - Reads a prompt template from a configuration file.
+        - Uses OpenAI's GPT-3.5-turbo model to generate the summary.
+        - Returns the generated summary text.
+
+        7. save_analysis_to_csv:
+        - Saves the analysis results to a CSV file.
+        - Inputs:
+            - video_title: Title of the analyzed video.
+            - analysis_output: Generated analysis summary.
+            - output_file: Name of the output CSV file (default is 'analysis_results.csv').
+        - Creates a DataFrame with the video title and analysis output.
+        - Appends the data to the specified CSV file or creates a new file if it does not exist.
+        - Returns the DataFrame containing the analysis data.
         
         """
     )
