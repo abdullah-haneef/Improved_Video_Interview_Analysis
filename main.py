@@ -8,6 +8,7 @@ import streamlit as st
 from PIL import Image
 from transformers import pipeline
 import mediapipe as mp
+from config import PROMPT
 
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
@@ -132,32 +133,7 @@ openai.api_key = 'sk-proj-zYWjQyWEDOoFfDVNf3szT3BlbkFJIEV7tw7CcoxSq35cOtr4'
 
 # Function to generate a comprehensive summary
 def generate_summary(emotion_results, posture_results):
-    prompt = '''
-    Based on the following observations from the interview, assess the suitability of the candidate.
-    Consider emotions and postures detected.
-
-    Overall Suitability Score: Calculated Score out of 10 by assigning scores to emotions (happy:2, surprise:0, fear:-2)
-    Overall Result: Suitable if candidate score is greater than 6,  Not suitable if candidate score is less than or equal to 6
-    Reasoning: Explain how specific emotions and postures influenced the candidate's performance. Discuss strengths and areas for improvement.
-
-    Generate output in the following format and do not use frame numbers in the analysis at all:
-
-    Based on the observations from the interview, here is the assessment of the candidate's suitability:
-
-    Candidate Assessment:
-    
-    Overall Suitability Score: X/10
-
-    Overall Result:
-
-    Reasoning:
-
-    Strengths:
-
-    Areas for Improvement:
-
-    '''
-
+    prompt = PROMPT
     frame_count = min(5, len(emotion_results))
     for frame_filename in sorted(emotion_results.keys())[:frame_count]:
         emotions = emotion_results[frame_filename]
@@ -214,7 +190,7 @@ if 'page' not in st.session_state:
     st.session_state.page = 'main'
 
 def main_page():
-    st.title('🎥 Interview Analysis')
+    st.title('🎥 AI Interview Analyzer')
     
     time_interval = st.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
     
