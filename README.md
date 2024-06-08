@@ -1,4 +1,4 @@
-# 🎥 Interview Analysis App 🤖
+# 🎥 AI Interview Analyzer App 🤖
 
 Analyze interview videos to assess candidate suitability using cutting-edge AI technology! This app extracts frames from videos, detects emotions and postures, generates comprehensive summaries, and visualizes results.
 
