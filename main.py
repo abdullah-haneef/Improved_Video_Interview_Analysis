@@ -9,9 +9,13 @@ from PIL import Image
 from transformers import pipeline
 import mediapipe as mp
 from config import PROMPT
+from api_keys import OPENAI_API_KEY
 
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
+
+# OpenAI API Key
+openai.api_key = OPENAI_API_KEY
 
 # Initialize posture detection model
 mp_pose = mp.solutions.pose
@@ -127,9 +131,6 @@ def create_average_emotion_chart(emotion_results):
     plt.tight_layout()
     st.pyplot(plt)
 
-
-# OpenAI API Key
-openai.api_key = 'sk-proj-zYWjQyWEDOoFfDVNf3szT3BlbkFJIEV7tw7CcoxSq35cOtr4'
 
 # Function to generate a comprehensive summary
 def generate_summary(emotion_results, posture_results):
