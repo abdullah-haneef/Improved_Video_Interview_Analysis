@@ -148,7 +148,7 @@ def generate_summary(emotion_results, posture_results):
     prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
   # Initialize GenerativeModel with API key
-  model = GenerativeModel(api_key=API_KEY)
+  model = GenerativeModel('models/gemini-pro')
 
   # Configure generation parameters (optional)
   config = GenerationConfig(max_tokens=1024, temperature=0.5)
