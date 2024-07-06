@@ -137,7 +137,7 @@ def create_average_emotion_chart(emotion_results):
 # Replace with your Gemini API key
 API_KEY = GEMINI_API_KEY
 
-from google_generativeai import GenerationConfig, GenerativeModel
+from google.generativeai import GenerationConfig, GenerativeModel
 
 def generate_summary(emotion_results, posture_results):
   prompt = PROMPT
