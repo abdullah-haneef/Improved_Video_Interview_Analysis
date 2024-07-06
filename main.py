@@ -138,6 +138,7 @@ def create_average_emotion_chart(emotion_results):
 API_KEY = GEMINI_API_KEY
 
 from google.generativeai import GenerationConfig, GenerativeModel
+genai.configure(api_key=API_KEY)
 
 def generate_summary(emotion_results, posture_results):
   prompt = PROMPT
@@ -155,7 +156,7 @@ def generate_summary(emotion_results, posture_results):
 
   try:
     # Generate summary using generate_content
-    response = model.generate_content(prompt, config=config)
+    response = model.generate_content(prompt, tool_config=config)
     summary = response.text
   except Exception as e:
     st.error(f"Error generating summary: {e}")
