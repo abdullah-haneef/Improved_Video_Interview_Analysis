@@ -9,7 +9,7 @@ from PIL import Image
 from transformers import pipeline
 import mediapipe as mp
 from config import PROMPT
-from api_keys import OPENAI_API_KEY, GEMINI_API_KEY
+from api_keys import OPENAI_API_KEY
 
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
@@ -17,8 +17,6 @@ emotion_model = pipeline('image-classification', model='dima806/facial_emotions_
 # OpenAI API Key
 openai.api_key = OPENAI_API_KEY
 
-# Gemini API Key
-# genai.configure(api_key=GEMINI_API_KEY)
 
 # Initialize posture detection model
 mp_pose = mp.solutions.pose
