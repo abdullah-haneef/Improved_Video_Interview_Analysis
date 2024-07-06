@@ -137,6 +137,8 @@ def create_average_emotion_chart(emotion_results):
 # Replace with your Gemini API key
 API_KEY = GEMINI_API_KEY
 
+from google_generativeai import GenerationConfig, GenerativeModel
+
 def generate_summary(emotion_results, posture_results):
   prompt = PROMPT
   frame_count = min(5, len(emotion_results))
@@ -145,12 +147,16 @@ def generate_summary(emotion_results, posture_results):
     posture = posture_results[frame_filename]
     prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
-  # Import libraries after obtaining API key for security reasons
-  from generative_ai import conversation
+  # Initialize GenerativeModel with API key
+  model = GenerativeModel(api_key=API_KEY)
+
+  # Configure generation parameters (optional)
+  config = GenerationConfig(max_tokens=1024, temperature=0.5)
 
   try:
-    response = conversation.Conversation(api_key=API_KEY).complete(prompt)
-    summary = response.chats[-1].message.text
+    # Generate summary using generate_content
+    response = model.generate_content(prompt, config=config)
+    summary = response.text
   except Exception as e:
     st.error(f"Error generating summary: {e}")
     summary = "An error occurred. Please try again."
