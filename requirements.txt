@@ -1,4 +1,3 @@
--q -U google-generativeai
 openai==0.28
 streamlit
 transformers
