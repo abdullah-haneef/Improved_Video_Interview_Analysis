@@ -133,28 +133,25 @@ def create_average_emotion_chart(emotion_results):
     st.pyplot(plt)
 
 
-# Function to generate a comprehensive summary
-model = genai.GenerativeModel('gemini-1.5-flash')
+def generate_summary(emotion_results, posture_results):
+    prompt = PROMPT
+    frame_count = min(5, len(emotion_results))
+    for frame_filename in sorted(emotion_results.keys())[:frame_count]:
+        emotions = emotion_results[frame_filename]
+        posture = posture_results[frame_filename]
+        prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
-# def generate_summary(emotion_results, posture_results):
-#     prompt = PROMPT
-#     frame_count = min(5, len(emotion_results))
-#     for frame_filename in sorted(emotion_results.keys())[:frame_count]:
-#         emotions = emotion_results[frame_filename]
-#         posture = posture_results[frame_filename]
-#         prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        temperature=0.5,
+        max_tokens=500,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt},
+        ]
+    )
 
-#     response = openai.ChatCompletion.create(
-#         model="gpt-3.5-turbo",
-#         temperature=0.5,
-#         max_tokens=500,
-#         messages=[
-#             {"role": "system", "content": "You are a helpful assistant."},
-#             {"role": "user", "content": prompt},
-#         ]
-#     )
-
-#     return response['choices'][0]['message']['content']
+    return response['choices'][0]['message']['content']
 
 # Function to save analysis to CSV
 def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_results.csv'):
