@@ -151,7 +151,7 @@ def generate_summary(emotion_results, posture_results):
   model = GenerativeModel('models/gemini-pro')
 
   # Configure generation parameters (optional)
-  config = GenerationConfig(max_tokens=1024, temperature=0.5)
+  config = GenerationConfig(max_output_tokens=1024, temperature=0.7)
 
   try:
     # Generate summary using generate_content
