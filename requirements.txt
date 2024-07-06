@@ -1,4 +1,4 @@
-openai==0.28
+generative-ai
 streamlit
 transformers
 mediapipe
