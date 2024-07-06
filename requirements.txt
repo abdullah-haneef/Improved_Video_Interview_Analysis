@@ -1,4 +1,4 @@
-generative-ai
+google-generativeai
 streamlit
 transformers
 mediapipe
