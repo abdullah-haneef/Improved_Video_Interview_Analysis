@@ -149,7 +149,7 @@ def generate_summary(emotion_results, posture_results):
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        temperature=0.5,
+        temperature=0.0,
         max_tokens=500,
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
