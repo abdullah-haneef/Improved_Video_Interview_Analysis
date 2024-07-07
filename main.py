@@ -152,35 +152,39 @@ headers = {
 # Set the model to use
 model = "togethercomputer/llama-2-70b-chat"
 
-# Set the prompt
-prompt = PROMPT
-frame_count = min(5, len(emotion_results))
-for frame_filename in sorted(emotion_results.keys())[:frame_count]:
-    emotions = emotion_results[frame_filename]
-    posture = posture_results[frame_filename]
-    prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
-# Set the temperature and max_tokens
-temperature = 0.0
-max_tokens = 1024
+def generate_summary(emotion_results, posture_results, prompt):
+    
+    frame_count = min(5, len(emotion_results))
+    for frame_filename in sorted(emotion_results.keys())[:frame_count]:
+        emotions = emotion_results[frame_filename]
+        posture = posture_results[frame_filename]
+        prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
-# Create the data payload for the API request
-data = {
-    "model": model,
-    "prompt": prompt,
-    "temperature": temperature,
-    "max_tokens": max_tokens
-}
+    # Set the temperature and max_tokens
+    temperature = 0.0
+    max_tokens = 1024
 
-# Send the API request
-response = requests.post(url, headers=headers, json=data)
+    # Create the data payload for the API request
+    data = {
+        "model": model,
+        "prompt": prompt,
+        "temperature": temperature,
+        "max_tokens": max_tokens
+    }
 
-# Check if the request was successful
-if response.status_code == 200:
-    # Get the generated text from the response
-    generated_text = response.json()['output']['choices'][0]['text']
-else:
-    print(f"Error: {response.status_code} - {response.text}")
+    # Send the API request
+    response = requests.post(url, headers=headers, json=data)
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Get the generated text from the response
+        generated_text = response.json()['output']['choices'][0]['text']
+        return generated_text
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
+        return None
+
 
 
 
@@ -300,7 +304,7 @@ def main_page():
             posture_results = detect_postures()
     
         with st.spinner('Generating summary...'):
-            analysis_output = generated_text
+            analysis_output = generate_summary(emotion_results, posture_results)
     
         st.write(analysis_output)
     
