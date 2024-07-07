@@ -12,13 +12,16 @@ import mediapipe as mp
 from config import PROMPT
 from api_keys import OPENAI_API_KEY
 
+# OpenAI API Key
+openai.api_key = xxxx
+
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
-
 
 # Initialize posture detection model
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose(static_image_mode=True, min_detection_confidence=0.5)
+
 
 
 # Function to extract frames from video
@@ -135,9 +138,6 @@ def create_average_emotion_chart(emotion_results):
     st.pyplot(plt)
 
 
-
-# OpenAI API Key
-openai.api_key = OPENAI_API_KEY
 
 def generate_summary(emotion_results, posture_results):
     prompt = PROMPT
