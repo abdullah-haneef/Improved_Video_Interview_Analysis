@@ -179,9 +179,9 @@ response = requests.post(url, headers=headers, json=data)
 if response.status_code == 200:
     # Get the generated text from the response
     generated_text = response.json()['output']['choices'][0]['text']
-    return generated_text
 else:
     print(f"Error: {response.status_code} - {response.text}")
+
 
 
 # from google.generativeai import GenerationConfig, GenerativeModel
@@ -300,7 +300,7 @@ def main_page():
             posture_results = detect_postures()
     
         with st.spinner('Generating summary...'):
-            analysis_output = generate_summary(emotion_results, posture_results)
+            analysis_output = generated_text
     
         st.write(analysis_output)
     
