@@ -13,7 +13,7 @@ from config import PROMPT
 from api_keys import OPENAI_API_KEY
 
 # OpenAI API Key
-openai.api_key = xxxx
+openai.api_key = OPENAI_API_KEY
 
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
