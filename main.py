@@ -159,7 +159,7 @@ def generate_summary(emotion_results, posture_results):
   # Set model to use (replace with a Together.AI model suitable for summarization)
   model = "togethercomputer/llama-2-70b-chat"  # You can explore other models
 
-  generated_text = together.Complete.create(prompt=prompt)
+  generated_text = together.Complete.create(prompt=prompt, model=model)
   return generated_text
     
 
