@@ -148,13 +148,7 @@ import together
 together.api_key = TOGETHER_API_KEY
 
 def generate_summary(emotion_results, posture_results):
-  """Generates a summary based on emotion and posture data using Together.AI API."""
-
-  if not together_api_key:
-    st.error("Please set the Together.AI API key as an environment variable (TOGETHER_API_KEY).")
-    return None
-
-  prompt = PROMPT  # Replace with your desired prompt template
+  prompt = PROMPT
 
   frame_count = min(5, len(emotion_results))
   for frame_filename in sorted(emotion_results.keys())[:frame_count]:
