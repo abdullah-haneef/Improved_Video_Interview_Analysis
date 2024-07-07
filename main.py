@@ -1,7 +1,7 @@
 import os
 import requests
 import cv2
-# import openai
+import openai
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,9 +14,6 @@ from api_keys import TOGETHER_API_KEY
 
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
-
-# # OpenAI API Key
-# openai.api_key = OPENAI_API_KEY
 
 
 # Initialize posture detection model
@@ -64,6 +61,7 @@ def detect_emotions(frame_folder='frames'):
     return emotion_results
 
 
+
 # Function to detect postures in frames
 def detect_postures(frame_folder='frames'):
     posture_results = {}
@@ -74,6 +72,7 @@ def detect_postures(frame_folder='frames'):
         result = pose.process(image_rgb)
         posture_results[frame_filename] = result
     return posture_results
+
 
 
 def create_emotion_chart(emotion_results):
@@ -105,6 +104,8 @@ def create_emotion_chart(emotion_results):
     plt.grid(True)
     plt.tight_layout()
     st.pyplot(plt)
+
+
 
 def create_average_emotion_chart(emotion_results):
     data = []
@@ -220,6 +221,10 @@ def generate_summary(emotion_results, posture_results):
 #   return summary
 
 
+
+# # OpenAI API Key
+# openai.api_key = OPENAI_API_KEY
+
 # def generate_summary(emotion_results, posture_results):
 #     prompt = PROMPT
 #     frame_count = min(5, len(emotion_results))
@@ -240,6 +245,8 @@ def generate_summary(emotion_results, posture_results):
 
 #     return response['choices'][0]['message']['content']
 
+
+
 # Function to save analysis to CSV
 def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_results.csv'):
     data = {
@@ -257,8 +264,9 @@ def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_res
     return df
 
 
+
 # Streamlit app
-st.set_page_config(page_title='Interview Analysis', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
+st.set_page_config(page_title='AI Interview Analysis', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
 
 # Apply custom CSS for black background and white text
 st.markdown(
