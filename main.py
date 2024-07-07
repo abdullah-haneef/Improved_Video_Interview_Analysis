@@ -136,32 +136,52 @@ def create_average_emotion_chart(emotion_results):
 
 
 
+os.environ['TOGETHER_API_KEY'] = 'd74e95d3ffdf2a1bb3a8fe7cf3969dca332cfd8cc50d7dbcc17e99719d20a97f'
 # Set the Together.AI API URL
 url = "https://api.together.xyz/inference"
 
-# (Optional) Set the Together.AI API key as an environment variable
-# This is recommended for security reasons.
-# You can set the environment variable before running your app (e.g., using export TOGETHER_API_KEY=your_key)
-# together_api_key = os.environ.get("TOGETHER_API_KEY")
+# Get the API key from the environment variable
+together_api_key = os.environ.get("TOGETHER_API_KEY")
 
-import together
-together.api_key = TOGETHER_API_KEY
+# Set the headers for the API request
+headers = {
+    "Authorization": f"Bearer {together_api_key}",
+    "Content-Type": "application/json"
+}
 
-def generate_summary(emotion_results, posture_results):
-  prompt = PROMPT
+# Set the model to use
+model = "togethercomputer/llama-2-70b-chat"
 
+# Set the prompt
+prompt = PROMPT
   frame_count = min(5, len(emotion_results))
   for frame_filename in sorted(emotion_results.keys())[:frame_count]:
     emotions = emotion_results[frame_filename]
     posture = posture_results[frame_filename]
     prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
-  # Set model to use (replace with a Together.AI model suitable for summarization)
-  model = "togethercomputer/llama-2-70b-chat"  # You can explore other models
+# Set the temperature and max_tokens
+temperature = 0.0
+max_tokens = 1024
 
-  generated_text = together.Complete.create(prompt=prompt, model=model)
-  return generated_text
-    
+# Create the data payload for the API request
+data = {
+    "model": model,
+    "prompt": prompt,
+    "temperature": temperature,
+    "max_tokens": max_tokens
+}
+
+# Send the API request
+response = requests.post(url, headers=headers, json=data)
+
+# Check if the request was successful
+if response.status_code == 200:
+    # Get the generated text from the response
+    generated_text = response.json()['output']['choices'][0]['text']
+    return generated_text
+else:
+    print(f"Error: {response.status_code} - {response.text}")
 
 
 # from google.generativeai import GenerationConfig, GenerativeModel
