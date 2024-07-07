@@ -3,7 +3,7 @@ streamlit
 transformers
 mediapipe
 yt-dlp
-opencv-python-headless
+opencv-python
 Pillow
 matplotlib
 pandas
