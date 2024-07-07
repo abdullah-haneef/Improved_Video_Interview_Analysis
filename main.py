@@ -142,7 +142,9 @@ url = "https://api.together.xyz/inference"
 # (Optional) Set the Together.AI API key as an environment variable
 # This is recommended for security reasons.
 # You can set the environment variable before running your app (e.g., using export TOGETHER_API_KEY=your_key)
-together_api_key = os.environ.get("TOGETHER_API_KEY")
+# together_api_key = os.environ.get("TOGETHER_API_KEY")
+
+export TOGETHER_API_KEY=TOGETHER_API_KEY
 
 def generate_summary(emotion_results, posture_results):
   """Generates a summary based on emotion and posture data using Together.AI API."""
