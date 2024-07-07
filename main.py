@@ -1,7 +1,7 @@
 import os
 import requests
 import cv2
-# import openai
+import openai
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,7 +10,7 @@ from PIL import Image
 from transformers import pipeline
 import mediapipe as mp
 from config import PROMPT
-from api_keys import TOGETHER_API_KEY
+from api_keys import OPENAI_API_KEY
 
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
@@ -136,110 +136,28 @@ def create_average_emotion_chart(emotion_results):
 
 
 
-os.environ['TOGETHER_API_KEY'] = 'd74e95d3ffdf2a1bb3a8fe7cf3969dca332cfd8cc50d7dbcc17e99719d20a97f'
-# Set the Together.AI API URL
-url = "https://api.together.xyz/inference"
-
-# Get the API key from the environment variable
-together_api_key = os.environ.get("TOGETHER_API_KEY")
-
-# Set the headers for the API request
-headers = {
-    "Authorization": f"Bearer {together_api_key}",
-    "Content-Type": "application/json"
-}
-
-# Set the model to use
-model = "togethercomputer/llama-2-70b-chat"
-
+# OpenAI API Key
+openai.api_key = OPENAI_API_KEY
 
 def generate_summary(emotion_results, posture_results):
-
-    prompt=PROMPT
+    prompt = PROMPT
     frame_count = min(5, len(emotion_results))
     for frame_filename in sorted(emotion_results.keys())[:frame_count]:
         emotions = emotion_results[frame_filename]
         posture = posture_results[frame_filename]
         prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
-    # Set the temperature and max_tokens
-    temperature = 0.0
-    max_tokens = 1024
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        temperature=0.5,
+        max_tokens=500,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt},
+        ]
+    )
 
-    # Create the data payload for the API request
-    data = {
-        "model": model,
-        "prompt": prompt,
-        "temperature": temperature,
-        "max_tokens": max_tokens
-    }
-
-    # Send the API request
-    response = requests.post(url, headers=headers, json=data)
-
-    # Check if the request was successful
-    if response.ok:
-        # Get the generated text from the response
-        generated_text = response.json()['output']['choices'][0]['text']
-        return generated_text
-    else:
-        print(f"Error: {response.status_code} - {response.text}")
-        return None
-
-
-
-
-# from google.generativeai import GenerationConfig, GenerativeModel
-# generativeai.configure(api_key = GEMINI_API_KEY)
-
-# def generate_summary(emotion_results, posture_results):
-#   prompt = PROMPT
-#   frame_count = min(5, len(emotion_results))
-#   for frame_filename in sorted(emotion_results.keys())[:frame_count]:
-#     emotions = emotion_results[frame_filename]
-#     posture = posture_results[frame_filename]
-#     prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
-
-#   # Initialize GenerativeModel with API key
-#   model = GenerativeModel('gemini-pro')
-
-#   # Configure generation parameters (optional)
-#   config = GenerationConfig(max_output_tokens=500, temperature=0.7)
-
-#   try:
-#     # Generate summary using generate_content
-#     response = model.generate_content(prompt)
-#     summary = response.text
-#   except Exception as e:
-#     st.error(f"Error generating summary: {e}")
-#     summary = "An error occurred. Please try again."
-
-#   return summary
-
-
-
-# # OpenAI API Key
-# openai.api_key = OPENAI_API_KEY
-
-# def generate_summary(emotion_results, posture_results):
-#     prompt = PROMPT
-#     frame_count = min(5, len(emotion_results))
-#     for frame_filename in sorted(emotion_results.keys())[:frame_count]:
-#         emotions = emotion_results[frame_filename]
-#         posture = posture_results[frame_filename]
-#         prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
-
-#     response = openai.ChatCompletion.create(
-#         model="gpt-3.5-turbo",
-#         temperature=0.5,
-#         max_tokens=500,
-#         messages=[
-#             {"role": "system", "content": "You are a helpful assistant."},
-#             {"role": "user", "content": prompt},
-#         ]
-#     )
-
-#     return response['choices'][0]['message']['content']
+    return response['choices'][0]['message']['content']
 
 
 
