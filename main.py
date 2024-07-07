@@ -156,40 +156,12 @@ def generate_summary(emotion_results, posture_results):
     posture = posture_results[frame_filename]
     prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
-  # Set headers for the API request
-  headers = {
-      "Authorization": f"Bearer {together_api_key}",
-      "Content-Type": "application/json"
-  }
-
   # Set model to use (replace with a Together.AI model suitable for summarization)
   model = "togethercomputer/llama-2-70b-chat"  # You can explore other models
 
-
-  # Set temperature and max_tokens (optional, adjust as needed)
-  temperature = 0.7
-  max_tokens = 1024
-
-  # Create the data payload for the API request
-  data = {
-      "model": model,
-      "prompt": prompt,
-      "temperature": temperature,
-      "max_tokens": max_tokens
-  }
-
-  # Send the API request
-  response = requests.post(url, headers=headers, json=data)
-
-  # Check if the request was successful
-  if response.status_code == 200:
-    # Get the generated text from the response
-    # generated_text = response.json()['output']['choices'][0]['text']
-    generated_text = together.Complete.create(prompt, model=model)
-    return generated_text
-  else:
-    st.error(f"Error: {response.status_code} - {response.text}")
-    return None    
+  generated_text = together.Complete.create(prompt, model=model)
+  return generated_text
+    
 
 
 # from google.generativeai import GenerationConfig, GenerativeModel
