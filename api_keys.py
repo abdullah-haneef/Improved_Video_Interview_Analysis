@@ -1,2 +1,3 @@
 OPENAI_API_KEY = 'sk-proj-bGZTSgSP5FRspviUgnhyT3BlbkFJqmqm4bgFLnmGOnomho0C'
 GEMINI_API_KEY = 'AIzaSyCwUKW552ec0WVsjdzObnV7zB2d50IpoEI'
+TOGETHER_API_KEY = 'd74e95d3ffdf2a1bb3a8fe7cf3969dca332cfd8cc50d7dbcc17e99719d20a97f'
