@@ -134,7 +134,8 @@ def create_average_emotion_chart(emotion_results):
 
 
 
-from google.generativeai as genai import GenerationConfig, GenerativeModel
+import google.generativeai as genai
+from genai import GenerationConfig, GenerativeModel
 genai.configure(api_key = GEMINI_API_KEY)
 
 def generate_summary(emotion_results, posture_results):
