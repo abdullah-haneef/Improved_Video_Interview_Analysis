@@ -2,7 +2,7 @@ google-generativeai
 streamlit
 transformers
 mediapipe
-yt-dlp
+together
 opencv-python-headless
 Pillow
 matplotlib
