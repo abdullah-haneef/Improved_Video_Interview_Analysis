@@ -178,7 +178,7 @@ def generate_summary(emotion_results, posture_results):
     response = requests.post(url, headers=headers, json=data)
 
     # Check if the request was successful
-    if response.status_code == 200:
+    if response.ok:
         # Get the generated text from the response
         generated_text = response.json()['output']['choices'][0]['text']
         return generated_text
