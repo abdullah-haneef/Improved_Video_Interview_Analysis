@@ -154,8 +154,8 @@ model = "togethercomputer/llama-2-70b-chat"
 
 # Set the prompt
 prompt = PROMPT
-  frame_count = min(5, len(emotion_results))
-  for frame_filename in sorted(emotion_results.keys())[:frame_count]:
+frame_count = min(5, len(emotion_results))
+for frame_filename in sorted(emotion_results.keys())[:frame_count]:
     emotions = emotion_results[frame_filename]
     posture = posture_results[frame_filename]
     prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
