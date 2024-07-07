@@ -153,8 +153,9 @@ headers = {
 model = "togethercomputer/llama-2-70b-chat"
 
 
-def generate_summary(emotion_results, posture_results, prompt):
-    
+def generate_summary(emotion_results, posture_results):
+
+    prompt=PROMPT
     frame_count = min(5, len(emotion_results))
     for frame_filename in sorted(emotion_results.keys())[:frame_count]:
         emotions = emotion_results[frame_filename]
