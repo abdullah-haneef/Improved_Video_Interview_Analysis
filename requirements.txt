@@ -1,8 +1,7 @@
-google-generativeai
+openai==0.28
 streamlit
 transformers
 mediapipe
-together
 opencv-python-headless
 Pillow
 matplotlib
