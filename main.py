@@ -144,7 +144,8 @@ url = "https://api.together.xyz/inference"
 # You can set the environment variable before running your app (e.g., using export TOGETHER_API_KEY=your_key)
 # together_api_key = os.environ.get("TOGETHER_API_KEY")
 
-export TOGETHER_API_KEY=TOGETHER_API_KEY
+import together
+together.api_key = TOGETHER_API_KEY
 
 def generate_summary(emotion_results, posture_results):
   """Generates a summary based on emotion and posture data using Together.AI API."""
@@ -170,6 +171,7 @@ def generate_summary(emotion_results, posture_results):
   # Set model to use (replace with a Together.AI model suitable for summarization)
   model = "togethercomputer/llama-2-70b-chat"  # You can explore other models
 
+
   # Set temperature and max_tokens (optional, adjust as needed)
   temperature = 0.7
   max_tokens = 1024
@@ -188,7 +190,8 @@ def generate_summary(emotion_results, posture_results):
   # Check if the request was successful
   if response.status_code == 200:
     # Get the generated text from the response
-    generated_text = response.json()['output']['choices'][0]['text']
+    # generated_text = response.json()['output']['choices'][0]['text']
+    generated_text = together.Complete.create(prompt, model=model)
     return generated_text
   else:
     st.error(f"Error: {response.status_code} - {response.text}")
