@@ -9,4 +9,3 @@ matplotlib
 pandas
 jsonpickle
 torch
-python-dotenv
