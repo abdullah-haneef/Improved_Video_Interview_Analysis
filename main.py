@@ -1,4 +1,5 @@
 import os
+import requests
 import cv2
 # import openai
 import pandas as pd
@@ -9,7 +10,7 @@ from PIL import Image
 from transformers import pipeline
 import mediapipe as mp
 from config import PROMPT
-from api_keys import GEMINI_API_KEY
+from api_keys import TOGETHER_API_KEY
 
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
@@ -134,32 +135,89 @@ def create_average_emotion_chart(emotion_results):
 
 
 
-from google.generativeai import GenerationConfig, GenerativeModel
-generativeai.configure(api_key = GEMINI_API_KEY)
+# Set the Together.AI API URL
+url = "https://api.together.xyz/inference"
+
+# (Optional) Set the Together.AI API key as an environment variable
+# This is recommended for security reasons.
+# You can set the environment variable before running your app (e.g., using export TOGETHER_API_KEY=your_key)
+together_api_key = os.environ.get("TOGETHER_API_KEY")
 
 def generate_summary(emotion_results, posture_results):
-  prompt = PROMPT
+  """Generates a summary based on emotion and posture data using Together.AI API."""
+
+  if not together_api_key:
+    st.error("Please set the Together.AI API key as an environment variable (TOGETHER_API_KEY).")
+    return None
+
+  prompt = PROMPT  # Replace with your desired prompt template
+
   frame_count = min(5, len(emotion_results))
   for frame_filename in sorted(emotion_results.keys())[:frame_count]:
     emotions = emotion_results[frame_filename]
     posture = posture_results[frame_filename]
     prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
-  # Initialize GenerativeModel with API key
-  model = GenerativeModel('gemini-pro')
+  # Set headers for the API request
+  headers = {
+      "Authorization": f"Bearer {together_api_key}",
+      "Content-Type": "application/json"
+  }
 
-  # Configure generation parameters (optional)
-  config = GenerationConfig(max_output_tokens=500, temperature=0.7)
+  # Set model to use (replace with a Together.AI model suitable for summarization)
+  model = "togethercomputer/llama-2-70b-chat"  # You can explore other models
 
-  try:
-    # Generate summary using generate_content
-    response = model.generate_content(prompt)
-    summary = response.text
-  except Exception as e:
-    st.error(f"Error generating summary: {e}")
-    summary = "An error occurred. Please try again."
+  # Set temperature and max_tokens (optional, adjust as needed)
+  temperature = 0.7
+  max_tokens = 1024
 
-  return summary
+  # Create the data payload for the API request
+  data = {
+      "model": model,
+      "prompt": prompt,
+      "temperature": temperature,
+      "max_tokens": max_tokens
+  }
+
+  # Send the API request
+  response = requests.post(url, headers=headers, json=data)
+
+  # Check if the request was successful
+  if response.status_code == 200:
+    # Get the generated text from the response
+    generated_text = response.json()['output']['choices'][0]['text']
+    return generated_text
+  else:
+    st.error(f"Error: {response.status_code} - {response.text}")
+    return None    
+
+
+# from google.generativeai import GenerationConfig, GenerativeModel
+# generativeai.configure(api_key = GEMINI_API_KEY)
+
+# def generate_summary(emotion_results, posture_results):
+#   prompt = PROMPT
+#   frame_count = min(5, len(emotion_results))
+#   for frame_filename in sorted(emotion_results.keys())[:frame_count]:
+#     emotions = emotion_results[frame_filename]
+#     posture = posture_results[frame_filename]
+#     prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
+
+#   # Initialize GenerativeModel with API key
+#   model = GenerativeModel('gemini-pro')
+
+#   # Configure generation parameters (optional)
+#   config = GenerationConfig(max_output_tokens=500, temperature=0.7)
+
+#   try:
+#     # Generate summary using generate_content
+#     response = model.generate_content(prompt)
+#     summary = response.text
+#   except Exception as e:
+#     st.error(f"Error generating summary: {e}")
+#     summary = "An error occurred. Please try again."
+
+#   return summary
 
 
 # def generate_summary(emotion_results, posture_results):
