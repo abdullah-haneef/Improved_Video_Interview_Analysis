@@ -13,7 +13,7 @@ from config import PROMPT
 from api_keys import OPENAI_API_KEY
 
 # OpenAI API Key
-openai.api_key = 
+openai.api_key = OPENAI_API_KEY
 
 # Initialize emotion detection model
 emotion_model = pipeline('image-classification', model='dima806/facial_emotions_image_detection')
@@ -33,8 +33,11 @@ def extract_frames(video_path, output_folder='frames', time_interval=1):
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     frame_interval = int(fps * 60 * time_interval)  # Convert minutes to frames
 
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    middle_frame_number = total_frames // 2
+
     count = 0
-    first_frame_path = None
+    middle_frame_path = None
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -42,12 +45,12 @@ def extract_frames(video_path, output_folder='frames', time_interval=1):
         if count % frame_interval == 0:
             frame_filename = os.path.join(output_folder, f"frame_{count}.jpg")
             cv2.imwrite(frame_filename, frame)
-            if first_frame_path is None:
-                first_frame_path = frame_filename
+            if middle_frame_path is None and count >= middle_frame_number:
+                middle_frame_path = frame_filename
         count += 1
 
     cap.release()
-    return first_frame_path
+    return middle_frame_path
 
 
 # Function to detect emotions in frames
@@ -148,9 +151,10 @@ def generate_summary(emotion_results, posture_results):
         prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
         temperature=0.0,
-        max_tokens=500,
+        max_tokens=1024,
+        top_p=1,
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
@@ -180,7 +184,7 @@ def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_res
 
 
 # Streamlit app
-st.set_page_config(page_title='AI Interview Analysis', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
+st.set_page_config(page_title='Interview-Insight', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
 
 # Apply custom CSS for black background and white text
 st.markdown(
@@ -200,7 +204,7 @@ if 'page' not in st.session_state:
     st.session_state.page = 'main'
 
 def main_page():
-    st.title('🎥 AI Interview Analyzer')
+    st.title('🎥 Interview-Insight')
     
     time_interval = st.slider('Frame Extraction Interval (minutes)', 1, 5, 1)
     
@@ -263,7 +267,7 @@ def behind_the_scenes_page():
             - video_path: Path to the video file.
             - output_folder: Folder to save the extracted frames (default is 'frames').
             - time_interval: Interval in minutes between frame extractions (default is 1).
-        - Returns the path of the first extracted frame.
+        - Returns the path of the middle frame.
         
         2. detect_emotions:
         - Detects emotions in images stored in a specified folder.
