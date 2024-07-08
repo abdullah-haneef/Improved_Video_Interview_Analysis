@@ -151,7 +151,7 @@ def generate_summary(emotion_results, posture_results):
         prompt += f"Frame {frame_filename}: Emotion - {emotions}, Pose - {posture.pose_landmarks}\n"
 
     response = openai.ChatCompletion.create(
-        model="gpt-4o",
+        model="gpt-3.5-turbo",
         temperature=0.0,
         max_tokens=1024,
         top_p=1,
