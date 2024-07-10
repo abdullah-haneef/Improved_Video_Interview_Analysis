@@ -186,13 +186,40 @@ def save_analysis_to_csv(video_title, analysis_output, output_file='analysis_res
 # Streamlit app
 st.set_page_config(page_title='Interview-Insight', page_icon='📊', layout='wide', initial_sidebar_state='expanded')
 
-# Apply custom CSS for black background and white text
+# Apply custom CSS for better styling
 st.markdown(
     """
     <style>
     body {
-        background-color: black;
+        background-color: #f5f5f5;
+        color: #333333;
+    }
+    .css-1d391kg {
+        background-color: #ffffff;
+    }
+    .css-18e3th9 {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+    .stButton button {
+        background-color: #4CAF50;
         color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 24px;
+    }
+    .stButton button:hover {
+        background-color: #45a049;
+    }
+    .stDownloadButton button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 24px;
+    }
+    .stDownloadButton button:hover {
+        background-color: #45a049;
     }
     </style>
     """,
