@@ -98,7 +98,7 @@ def create_emotion_chart(emotion_results):
     df['Frame'] = pd.to_numeric(df['Frame'].str.replace('frame_', '').str.replace('.jpg', ''))
     df = df.sort_values(by='Frame')
 
-    plt.figure(figsize=(14, 8))
+    plt.figure(figsize=(8, 5))
     for label in df['Label'].unique():
         subset = df[df['Label'] == label]
         plt.plot(subset['Frame'], subset['Score'], label=label)
@@ -131,7 +131,7 @@ def create_average_emotion_chart(emotion_results):
     df_mean = df.groupby('Label').mean().reset_index()
 
     # Plotting the average scores
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 5))
     plt.bar(df_mean['Label'], df_mean['Score'], color=['red', 'green', 'orange'])
     plt.xlabel('Emotion')
     plt.ylabel('Average Score')
@@ -260,12 +260,28 @@ def main_page():
             analysis_output = generate_summary(emotion_results, posture_results)
         st.success("Generated Summary!")
     
-        st.write(analysis_output)
-        st.text_area("Generated Analysis", analysis_output, height=300)
+        st.text_area("Generated Analysis", analysis_output, height=400)
     
+        # with st.spinner('Creating emotion charts...'):
+        #     create_emotion_chart(emotion_results)
+        #     create_average_emotion_chart(emotion_results)
+        # st.success("Created Charts!")
+
         with st.spinner('Creating emotion charts...'):
-            create_emotion_chart(emotion_results)
-            create_average_emotion_chart(emotion_results)
+            # Create columns for side-by-side charts
+            col1, col2 = st.columns(2)
+            
+            # Plot emotion chart
+            with col1:
+                fig, ax = plt.subplots(figsize=(7, 4))
+                create_emotion_chart(emotion_results, ax)
+                st.pyplot(fig)
+            # Plot average emotion chart
+            with col2:
+                fig, ax = plt.subplots(figsize=(7, 4))
+                create_average_emotion_chart(emotion_results, ax)
+                st.pyplot(fig)
+                
         st.success("Created Charts!")
     
         # Get video title from user
