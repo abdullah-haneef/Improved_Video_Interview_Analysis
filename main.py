@@ -243,24 +243,30 @@ def main_page():
             with open('temp_video.mp4', 'wb') as f:
                 f.write(video_file.read())
             first_frame_path = extract_frames('temp_video.mp4', time_interval=time_interval)
+        st.success("Extracted Frames!")
     
         if first_frame_path:
-            st.image(first_frame_path, caption='First extracted frame from the video', use_column_width=True)
+            st.image(first_frame_path, caption='Extracted frame from the video', use_column_width=True)
     
         with st.spinner('Detecting emotions...'):
             emotion_results = detect_emotions()
+        st.success("Detected Emotions!")
     
         with st.spinner('Detecting postures...'):
             posture_results = detect_postures()
+        st.success("Detected Postures!")
     
         with st.spinner('Generating summary...'):
             analysis_output = generate_summary(emotion_results, posture_results)
+        st.success("Generated Summary!")
     
         st.write(analysis_output)
+        st.text_area("Generated Analysis", analysis_output, height=300)
     
         with st.spinner('Creating emotion charts...'):
             create_emotion_chart(emotion_results)
             create_average_emotion_chart(emotion_results)
+        st.success("Created Charts!")
     
         # Get video title from user
         video_title = st.text_input('Enter the video title', '')
