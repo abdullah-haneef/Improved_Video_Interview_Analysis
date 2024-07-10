@@ -36,9 +36,10 @@ Ensure you have the following installed:
    ```sh
    pip install -r requirements.txt
 
-3. **Set Up OpenAI API Key:**:
+3. **Set Up OpenAI API Key:**
+   Set up your api key in the api_keys.py file
    ```sh
-   export OPENAI_API_KEY='your-api-key-here'
+   OPENAI_API_KEY='your-api-key-here'
 
 ### Running the App on Local Device
 
