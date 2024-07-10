@@ -332,13 +332,11 @@ def main_page():
             
             # Plot emotion chart
             with col1:
-                fig, ax = plt.subplots(figsize=(7, 4))
-                create_emotion_chart(emotion_results, ax)
+                fig = create_emotion_chart(emotion_results)
                 st.pyplot(fig)
             # Plot average emotion chart
             with col2:
-                fig, ax = plt.subplots(figsize=(7, 4))
-                create_average_emotion_chart(emotion_results, ax)
+                fig = create_average_emotion_chart(emotion_results)
                 st.pyplot(fig)
                 
         st.success("Created Charts!")
