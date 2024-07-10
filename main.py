@@ -81,6 +81,65 @@ def detect_postures(frame_folder='frames'):
 
 
 
+# def create_emotion_chart(emotion_results):
+#     data = []
+#     important_emotions = ['happy', 'fear', 'surprise']
+
+#     for frame, emotions in emotion_results.items():
+#         for emotion in emotions:
+#             if emotion['label'].lower() in important_emotions:
+#                 data.append({
+#                     'Frame': frame,
+#                     'Label': emotion['label'],
+#                     'Score': emotion['score']
+#                 })
+
+#     df = pd.DataFrame(data)
+#     df['Frame'] = pd.to_numeric(df['Frame'].str.replace('frame_', '').str.replace('.jpg', ''))
+#     df = df.sort_values(by='Frame')
+
+#     plt.figure(figsize=(8, 5))
+#     for label in df['Label'].unique():
+#         subset = df[df['Label'] == label]
+#         plt.plot(subset['Frame'], subset['Score'], label=label)
+
+#     plt.xlabel('Frames')
+#     plt.ylabel('Emotion Score')
+#     plt.title('Emotion Scores Over Frames')
+#     plt.legend(loc='upper right')
+#     plt.grid(True)
+#     plt.tight_layout()
+#     st.pyplot(plt)
+
+
+
+# def create_average_emotion_chart(emotion_results):
+#     data = []
+#     important_emotions = ['happy', 'fear', 'surprise']
+
+#     for frame, emotions in emotion_results.items():
+#         for emotion in emotions:
+#             if emotion['label'].lower() in important_emotions:
+#                 data.append({
+#                     'Label': emotion['label'].lower(),
+#                     'Score': emotion['score']
+#                 })
+
+#     df = pd.DataFrame(data)
+
+#     # Group by 'Label' and calculate the mean score for each emotion
+#     df_mean = df.groupby('Label').mean().reset_index()
+
+#     # Plotting the average scores
+#     plt.figure(figsize=(8, 5))
+#     plt.bar(df_mean['Label'], df_mean['Score'], color=['red', 'green', 'orange'])
+#     plt.xlabel('Emotion')
+#     plt.ylabel('Average Score')
+#     plt.title('Average Scores of Emotions')
+#     plt.grid(True)
+#     plt.tight_layout()
+#     st.pyplot(plt)
+
 def create_emotion_chart(emotion_results):
     data = []
     important_emotions = ['happy', 'fear', 'surprise']
@@ -98,20 +157,19 @@ def create_emotion_chart(emotion_results):
     df['Frame'] = pd.to_numeric(df['Frame'].str.replace('frame_', '').str.replace('.jpg', ''))
     df = df.sort_values(by='Frame')
 
-    plt.figure(figsize=(8, 5))
+    fig, ax = plt.subplots(figsize=(7, 4))
+
     for label in df['Label'].unique():
         subset = df[df['Label'] == label]
-        plt.plot(subset['Frame'], subset['Score'], label=label)
+        ax.plot(subset['Frame'], subset['Score'], label=label)
 
-    plt.xlabel('Frames')
-    plt.ylabel('Emotion Score')
-    plt.title('Emotion Scores Over Frames')
-    plt.legend(loc='upper right')
-    plt.grid(True)
-    plt.tight_layout()
-    st.pyplot(plt)
-
-
+    ax.set_xlabel('Frames')
+    ax.set_ylabel('Emotion Score')
+    ax.set_title('Emotion Scores Over Frames')
+    ax.legend(loc='upper right')
+    ax.grid(True)
+    
+    return fig
 
 def create_average_emotion_chart(emotion_results):
     data = []
@@ -130,15 +188,16 @@ def create_average_emotion_chart(emotion_results):
     # Group by 'Label' and calculate the mean score for each emotion
     df_mean = df.groupby('Label').mean().reset_index()
 
+    fig, ax = plt.subplots(figsize=(7, 4))
+
     # Plotting the average scores
-    plt.figure(figsize=(8, 5))
-    plt.bar(df_mean['Label'], df_mean['Score'], color=['red', 'green', 'orange'])
-    plt.xlabel('Emotion')
-    plt.ylabel('Average Score')
-    plt.title('Average Scores of Emotions')
-    plt.grid(True)
-    plt.tight_layout()
-    st.pyplot(plt)
+    ax.bar(df_mean['Label'], df_mean['Score'], color=['red', 'green', 'orange'])
+    ax.set_xlabel('Emotion')
+    ax.set_ylabel('Average Score')
+    ax.set_title('Average Scores of Emotions')
+    ax.grid(True)
+    
+    return fig
 
 
 
