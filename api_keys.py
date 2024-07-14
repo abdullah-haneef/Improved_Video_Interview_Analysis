@@ -1,1 +1,1 @@
-OPENAI_API_KEY = 'sk-proj-WXYyy3PQV4QGcYo4nGaZT3BlbkFJUp0e0temL0lmBHpl1htj'
+OPENAI_API_KEY = 'insert your api key here'
